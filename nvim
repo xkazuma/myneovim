@@ -1,0 +1,26 @@
+#!/bin/bash
+
+USER=$(whoami)
+USERID=$(id -u)
+
+if [[ $1 == "" ]]; then
+  WS=$(pwd)
+  FILE=""
+else
+  WS=$(dirname $(realpath $1))
+  FILE=$(basename $1)
+fi
+
+MOUNT_OPTIONS="--mount type=bind,source=${WS},target=/workspace "
+MOUNT_OPTIONS+="--mount type=bind,source=/run/user/${USERID},target=/run/user/${USERID} "
+MOUNT_OPTIONS+="--mount type=bind,source=/mnt/wslg,target=/mnt/wslg "
+MOUNT_OPTIONS+="--mount type=bind,source=/tmp/.X11-unix,target=/tmp/.X11-unix "
+MOUNT_OPTIONS+="--mount type=bind,source=/home/${USER}/.ssh/,target=/home/${USER}/.ssh/ "
+MOUNT_OPTIONS+="--mount type=bind,source=/home/${USER}/.gitconfig,target=/home/${USER}/.gitconfig "
+MOUNT_OPTIONS+="--mount type=volume,source=myneovim,target=/home/${USER} "
+
+docker run --rm -it \
+  ${MOUNT_OPTIONS} \
+  -w /workspace \
+  myneovim \
+  nvim ${FILE}

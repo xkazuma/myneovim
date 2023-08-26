@@ -167,7 +167,7 @@ RUN git clone https://github.com/tree-sitter/tree-sitter.git \
 
 # Installing myneovimrc
 #########################
-RUN git clone https://github.com/xkazuma/myneovimrc.git -b main \
+RUN git clone https://github.com/xkazuma/myneovimrc.git -b docker-main \
  && cd myneovimrc \
  && make install-pure-lua-for-docker \
  && nvim +:q \

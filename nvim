@@ -19,8 +19,11 @@ MOUNT_OPTIONS+="--mount type=bind,source=/home/${USER}/.ssh/,target=/home/${USER
 MOUNT_OPTIONS+="--mount type=bind,source=/home/${USER}/.gitconfig,target=/home/${USER}/.gitconfig "
 MOUNT_OPTIONS+="--mount type=volume,source=myneovim,target=/home/${USER} "
 
+ENV_VARS="-e XDG_RUNTIME_DIR=/run/user/${USERID}"
+
 docker run --rm -it \
   ${MOUNT_OPTIONS} \
   -w /workspace \
+  ${ENV_VARS} \
   myneovim \
   nvim ${FILE}

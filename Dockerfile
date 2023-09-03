@@ -27,7 +27,10 @@ RUN apt-get update -y \
  && apt-get install -y \
       build-essential \
       wget \
-      ripgrep
+      ripgrep \
+      xclip \
+      xsel \
+      wl-clipboard
 
 # Setting-up locale ####
 ########################

@@ -82,26 +82,26 @@ RUN curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh \
 # Python 3 ########################################
 ###################################################
 RUN apt-get install -y \
-    zlib1g-dev \
-    libncurses5-dev \
-    libgdbm-dev \
-    libnss3-dev \
-    libssl-dev \
-    libreadline-dev \
-    libffi-dev \
-    libsqlite3-dev \
-    libbz2-dev \
-    firefox-esr \
-    fonts-stix \
- && wget https://www.python.org/ftp/python/3.10.1/Python-3.10.1.tgz \
- && tar -xf Python-3.10.1.tgz \
- && rm Python-3.10.1.tgz \
- && cd Python-3.10.1 \
+      zlib1g-dev \
+      libgdbm-dev \
+      libnss3-dev \
+      libssl-dev \
+      libreadline-dev \
+      libffi-dev \
+      libsqlite3-dev \
+      libbz2-dev
+RUN export PYTHON_PATCH_VERSION=3.12.2 \
+ && export PYTHON_MINOR_VERSION=3.12 \
+ && export PYTHON_MAJOR_VERSION=3 \
+ && wget https://www.python.org/ftp/python/${PYTHON_PATCH_VERSION}/Python-${PYTHON_PATCH_VERSION}.tgz \
+ && tar -xf Python-*.tgz \
+ && rm Python-*.tgz \
+ && cd Python-${PYTHON_PATCH_VERSION} \
  && ./configure --enable-optimizations \
  && make -j $(mproc) \
  && make altinstall \
- && ln -s /usr/local/bin/python3.10 /usr/local/bin/python3 \
- && ln -s /usr/local/bin/pip3.10 /usr/local/bin/pip3
+ && ln -s /usr/local/bin/python${PYTHON_MINOR_VERSION} /usr/local/bin/python${PYTHON_MAJOR_VERSION} \
+ && ln -s /usr/local/bin/pip${PYTHON_MINOR_VERSION} /usr/local/bin/pip${PYTHON_MAJOR_VERSION}
 # Jupynium requirements #
 # - jupyter             #
 # - mozilla driver      #
@@ -132,7 +132,7 @@ ENV PATH        /opt/rust/bin:/home/${USER}/.cargo/bin:/usr/local/lib/node-${NOD
 ###################################################
 # Neovim ##########################################
 ###################################################
-RUN wget https://github.com/neovim/neovim/releases/download/v0.9.1/nvim-linux64.tar.gz \
+RUN wget https://github.com/neovim/neovim/releases/download/v0.9.5/nvim-linux64.tar.gz \
  && tar -zxvf nvim-linux64.tar.gz \
  && mv nvim-linux64/bin/nvim /usr/bin/nvim \
  && mv nvim-linux64/lib/nvim /usr/lib/nvim \
@@ -170,7 +170,7 @@ RUN git clone https://github.com/tree-sitter/tree-sitter.git \
 
 # Installing myneovimrc
 #########################
-RUN git clone https://github.com/xkazuma/myneovimrc.git -b docker-main \
+RUN git clone https://github.com/xkazuma/myneovimrc.git -b main-docker \
  && cd myneovimrc \
  && make install-pure-lua-for-docker \
  && nvim +:q \

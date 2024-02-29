@@ -140,9 +140,13 @@ RUN wget https://github.com/neovim/neovim/releases/download/v0.9.5/nvim-linux64.
  && rm -rf nvim-linux64 \
  && rm nvim-linux64.tar.gz 
 
-# Ctag requirements
+# Packages Required by Neovim Plugins
 #########################
-RUN apt-get install -y universal-ctags
+# universal-ctags: ctag
+# graphviz:        rustaceanvim
+RUN apt-get install -y \
+  universal-ctags \
+  graphviz
 
 ###################################################
 # Before User Switch ##############################
